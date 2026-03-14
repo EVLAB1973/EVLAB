@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>EV LAB | Tesla Experts</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --neon-blue: #00f0ff;
+    --neon-white: #ffffff;
+    --dark-bg: #0b1118;
+    --soft-border: rgba(255, 255, 255, 0.2); 
+    --card-bg: rgba(255, 255, 255, 0.08);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Assistant',sans-serif;}
+body{background: var(--dark-bg); color: #fff; overflow-x:hidden; width: 100%;}
+
+/* אנימציות */
+@keyframes hyper-dance {
+    0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    25% { transform: translate(12px, -15px) rotate(8deg) scale(1.08); }
+    50% { transform: translate(-8px, 0px) rotate(-6deg) scale(1.1); }
+    75% { transform: translate(10px, -10px) rotate(4deg) scale(1.05); }
+    100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+}
+
+@keyframes camera-shake {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(10deg) scale(1.1); }
+    50% { transform: rotate(-10deg) scale(1.1); }
+    75% { transform: rotate(10deg) scale(1.1); }
+    100% { transform: rotate(0deg); }
+}
+
+@keyframes domino-glow {
+    0%, 20% { background: var(--card-bg); box-shadow: none; border-color: var(--soft-border); transform: translateY(0); }
+    10% { background: rgba(0, 240, 255, 0.15); box-shadow: 0 0 25px rgba(0, 240, 255, 0.6); border-color: var(--neon-blue); transform: translateY(-10px); }
+    100% { background: var(--card-bg); box-shadow: none; border-color: var(--soft-border); transform: translateY(0); }
+}
+
+/* רקע */
+.bg-slider{ position:fixed; top:0; left:0; width:100%; height:100%; z-index:-2; }
+.bg-slide{ position:absolute; width:100%; height:100%; background-size:cover; background-position:center; opacity:0; transition:opacity 2s ease; filter: brightness(0.6) contrast(1.1); }
+.bg-slide.active{opacity:1;}
+.overlay{ position:fixed; top:0; left:0; width:100%; height:100%; background:radial-gradient(circle, transparent 20%, var(--dark-bg) 95%); z-index:-1; }
+
+/* לוגו מרכזי חדש */
+header { 
+    position: absolute; 
+    top: 40px; 
+    right: 0; 
+    left: 0; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;
+    z-index: 10; 
+    text-align: center;
+}
+header h1 { 
+    font-size: 82px; 
+    font-weight: 900; 
+    line-height: 0.85; 
+    margin: 0;
+    display: flex;
+    gap: 15px;
+}
+.ev-glow { color: var(--neon-white); text-shadow: 0 0 25px rgba(255, 255, 255, 0.6); }
+.lab-glow { color: transparent; -webkit-text-stroke: 1.5px var(--neon-blue); text-shadow: 0 0 10px rgba(0, 240, 255, 0.3); }
+
+.logo-tagline-en { 
+    font-size: 16px; 
+    color: rgba(0, 240, 255, 0.8); 
+    font-weight: 400; 
+    margin-top: 12px; 
+    letter-spacing: 2px; 
+    text-transform: uppercase;
+    width: 100%;
+}
+
+/* כפתורי צד */
+.side-controls { position: fixed; top: 20px; left: 15px; display: flex; flex-direction: column; gap: 20px; z-index: 9999; }
+.float-btn { width: 68px; height: 68px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(0, 240, 255, 0.05); border: 2px solid var(--neon-blue); backdrop-filter: blur(12px); animation: hyper-dance 3s infinite ease-in-out; text-decoration: none; cursor: pointer; }
+.float-btn.sos { color: var(--neon-blue); font-weight: 900; font-size: 15px; text-align: center; line-height: 1.1; }
+.float-btn svg { fill: var(--neon-blue); width: 31px; height: 31px; }
+
+/* Hero */
+.hero { min-height: 80vh; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; text-align: right; padding: 220px 0 40px; width: 78%; margin-right: auto; margin-left: 110px; }
+.hero h2 { font-size: 48px; font-weight: 900; color: #fff; text-shadow: 0 0 15px rgba(255, 255, 255, 0.8); }
+.hero p.tagline { font-size: 24px; color: var(--neon-blue); font-weight: 700; margin-bottom: 30px; }
+.hero-bullets { background: rgba(255,255,255,0.03); padding: 25px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1); font-size: 18px; line-height: 1.8; width: 100%; max-width: 450px; backdrop-filter: blur(5px); }
+
+/* גריד שירותים */
+.section-title { font-size: 38px; text-align: right; margin: 60px 0 30px; color: #fff; font-weight: 800; width: 78%; margin-right: auto; margin-left: 110px; }
+.unified-grid, .why-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 78%; margin-right: auto; margin-left: 110px; }
+
+.unified-card, .why-card { 
+    background: var(--card-bg); 
+    border: 1px solid var(--soft-border); 
+    border-radius: 15px; 
+    padding: 25px 20px; 
+    text-align: right; 
+    backdrop-filter: blur(5px); 
+    transition: all 0.4s ease; 
+}
+
+/* דומינו */
+.start-domino-9 .unified-card { animation: domino-glow 9s infinite; }
+.start-domino-6 .why-card { animation: domino-glow 6s infinite; }
+.unified-card:nth-child(1) { animation-delay: 0s; }
+.unified-card:nth-child(2) { animation-delay: 1s; }
+.unified-card:nth-child(3) { animation-delay: 2s; }
+.unified-card:nth-child(4) { animation-delay: 3s; }
+.unified-card:nth-child(5) { animation-delay: 4s; }
+.unified-card:nth-child(6) { animation-delay: 5s; }
+.unified-card:nth-child(7) { animation-delay: 6s; }
+.unified-card:nth-child(8) { animation-delay: 7s; }
+.unified-card:nth-child(9) { animation-delay: 8s; }
+
+.unified-card h3, .why-card h4 { color: var(--neon-blue); font-size: 22px; margin-bottom: 12px; font-weight: 800; display: flex; align-items: center; gap: 12px; }
+.why-card { text-align: center; }
+.why-card h4 { justify-content: center; }
+.why-card .icon { font-size: 35px; margin-bottom: 15px; display: block; }
+
+.inline-camera-icon { width: 32px; height: 32px; fill: #FFD700; animation: camera-shake 1.5s infinite ease-in-out; }
+
+/* מצב קריאה */
+.reading-mode { background: rgba(0, 0, 0, 0.4) !important; border-color: var(--neon-blue) !important; box-shadow: 0 0 15px rgba(0, 240, 255, 0.3) !important; }
+
+/* טופס */
+.lead-form { width: 78%; margin-right: auto; margin-left: 110px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 35px; border-radius: 20px; margin-top: 50px; }
+.lead-form input { width: 100%; padding: 18px; margin-bottom: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); color: #fff; text-align: right; font-size: 16px; }
+.lead-form button { width: 100%; padding: 20px; border-radius: 12px; background: var(--neon-blue); color: #000; font-weight: 900; border: none; font-size: 22px; cursor: pointer; transition: 0.3s; }
+
+/* חברתי */
+.social-row { display: flex; justify-content: center; gap: 15px; padding: 60px 0; flex-wrap: wrap; width: 78%; margin-right: auto; margin-left: 110px; }
+.dance-box { 
+    width: 75px; height: 75px; border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+    border: 2px solid var(--neon-blue); background: rgba(0, 240, 255, 0.05); 
+    backdrop-filter: blur(10px); animation: hyper-dance 3.5s infinite ease-in-out;
+    text-decoration: none; cursor: pointer;
+}
+.dance-box svg { width: 38px; height: 38px; }
+.icon-facebook svg { fill: #1877F2; }
+.icon-whatsapp svg { fill: #25D366; }
+.icon-instagram svg { fill: #E1306C; }
+.icon-camera svg { fill: #FFD700; }
+.icon-sos { color: #FF0000; font-weight: 900; font-size: 19px; border-color: #FF0000; }
+.icon-phone svg { fill: #00f0ff; }
+
+footer { text-align: center; padding: 50px; color: #888; font-size: 15px; border-top: 1px solid rgba(255,255,255,0.05); }
+
+#fileInput { display: none; }
+
+@media (max-width: 600px) { 
+    .hero, .section-title, .unified-grid, .why-grid, .lead-form, .social-row { width: 90%; margin: 0 auto 30px; }
+    header { top: 30px; }
+    header h1 { font-size: 50px; }
+    .logo-tagline-en { font-size: 11px; letter-spacing: 1px; }
+    .unified-grid, .why-grid { grid-template-columns: 1fr; }
+    .side-controls { left: 8px; }
+}
+</style>
+</head>
+<body>
+
+<input type="file" id="fileInput" accept="image/*" capture="camera" onchange="imageSent()">
+
+<div class="bg-slider">
+    <div class="bg-slide active" style="background-image:url('https://images.unsplash.com/photo-1617788138017-80ad40651399?q=80&w=1600');"></div>
+    <div class="bg-slide" style="background-image:url('https://images.unsplash.com/photo-1593941707882-a5bba14938c7?q=80&w=1600');"></div>
+</div>
+<div class="overlay"></div>
+
+<header>
+    <h1><span class="ev-glow">EV</span> <span class="lab-glow">LAB</span></h1>
+    <p class="logo-tagline-en">Central Electric Vehicle Laboratory</p>
+</header>
+
+<div class="side-controls">
+    <a href="https://wa.me/972502232222" class="float-btn"><svg viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.1 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-5.5-2.8-23.2-8.5-44.2-27.2-16.4-14.6-27.4-32.7-30.6-38.2-3.2-5.6-.3-8.6 2.5-11.3 2.5-2.5 5.5-6.5 8.3-9.7 2.8-3.3 3.7-5.6 5.5-9.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 13.2 5.8 23.5 9.2 31.6 11.8 13.3 4.2 25.4 3.6 35 2.2 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg></a>
+    <a href="tel:0502232222" class="float-btn sos">חילוץ<br>SOS</a>
+    <a href="tel:0502232222" class="float-btn"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.15 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></a>
+</div>
+
+<section class="hero">
+    <h2>הבית לרכבים חשמליים</h2>
+    <p class="tagline">האנרגיה שלנו, השקט שלך | מומחי Tesla</p>
+    <div class="hero-bullets">
+        <p>✔ תיקון והחלפת סוללות מתח גבוה HV</p>
+        <p>✔ בדיקת רכב לפני קנייה מקיפה</p>
+        <p>✔ החלפת מראות ופנסים בסטנדרט VIP</p>
+    </div>
+</section>
+
+<h2 class="section-title">השירותים שלנו</h2>
+<div class="unified-grid" id="servicesGrid">
+    <div class="unified-card"><h3>סוללות מתח גבוה</h3><p>אבחון, תיקון והחלפת סוללות High Voltage. איזון תאים, החלפת BMS ורכיבים ברמה הגבוהה ביותר. אפשרות לביטוח סוללה חודשי לרכבים שנגמרה להם האחריות.</p></div>
+    <div class="unified-card"><h3>בדיקה לפני קנייה</h3><p>ניתוח בריאות סוללה (SoH), בדיקה בתנאי מאמץ, בדיקת מרכב ותאונות, עבר ביטוחי ודו"ח סליקה. אנו מבטיחים שקיפות מלאה לפני שאתם קונים.</p></div>
+    <div class="unified-card" onclick="openCam()">
+        <h3><svg class="inline-camera-icon" viewBox="0 0 24 24"><path d="M5 4h4l2-2h6l2 2h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 2v12h14V6h-4.83l-2-2H9.83l-2 2H5zm7 10a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0-2a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg> החלפת מראות ופנסים</h3>
+        <p>חלפים מקוריים בלבד! צוות VIP מגיע עד אליך עם כל הציוד. שלח תמונה של הנזק וקבל הצעת מחיר מיידית וביצוע בבית הלקוח.</p>
+    </div>
+    <div class="unified-card" onclick="openCam()">
+        <h3><svg class="inline-camera-icon" viewBox="0 0 24 24"><path d="M5 4h4l2-2h6l2 2h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 2v12h14V6h-4.83l-2-2H9.83l-2 2H5zm7 10a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0-2a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg> תיקוני מרכב</h3>
+        <p>מומחיות בתיקוני אלומיניום וחומרים מרוכבים של טסלה. פגושים, ג'נטים וחלקי פח. שלח תמונה וקבל הערכת נזק וזמן תיקון מהיר.</p>
+    </div>
+    <div class="unified-card"><h3>חילוץ בדרכים SOS</h3><p>פנצ'רים, רכב נעול, אובדן מפתחות או תקלות חשמליות. זמינות 24/6 בכל אזור גוש דן עם הציוד המתקדם ביותר לחילוץ טסלה.</p></div>
+    <div class="unified-card"><h3>דיאגנוסטיקה</h3><p>סריקת עומק ברמת יצרן, עדכוני גרסאות ופתרון תקלות תוכנה מורכבות. אנו מאבחנים תקלות לפני שהן הופכות לנזק משמעותי.</p></div>
+    <div class="unified-card"><h3>מצברים עד הבית</h3><p>החלפת סוללות ליתיום 16v ו-12v לכל המודלים. הגעה מהירה והחלפה במקום אם הרכב לא מניע או מציג התראת מתח.</p></div>
+    <div class="unified-card"><h3>תחזוקה מונעת</h3><p>טיפול במערכות קירור סוללה, החלפת מסננים ובדיקה כללית. שמירה על המערכות קריטית לאורך חיי הסוללה והביצועים.</p></div>
+    <div class="unified-card"><h3>שירות לציי רכב</h3><p>פתרונות תחזוקה כוללים לציי רכב חשמליים בפריסה ארצית. הסכמי שירות מותאמים אישית וזמני תגובה מהירים ביותר.</p></div>
+</div>
+
+<h2 class="section-title">למה EV LAB?</h2>
+<div class="why-grid" id="whyGrid">
+    <div class="why-card"><span class="icon">🏆</span><h4>מומחיות</h4><p>ניסיון מעשי ב-Tesla</p></div>
+    <div class="why-card"><span class="icon">🚀</span><h4>מהירות</h4><p>מענה SOS מיידי</p></div>
+    <div class="why-card"><span class="icon">📍</span><h4>VIP</h4><p>אנחנו מגיעים אליך</p></div>
+    <div class="why-card"><span class="icon">💻</span><h4>טכנולוגיה</h4><p>ציוד אבחון יצרן</p></div>
+    <div class="why-card"><span class="icon">💰</span><h4>חיסכון</h4><p>תיקון במקום החלפה</p></div>
+    <div class="why-card"><span class="icon">🛡️</span><h4>אמינות</h4><p>שקיפות מלאה ללקוח</p></div>
+</div>
+
+<section class="lead-form">
+    <h3>השאר פרטים ונחזור אליך</h3>
+    <input type="text" id="leadName" placeholder="שם מלא">
+    <input type="tel" id="leadPhone" placeholder="טלפון">
+    <button onclick="sendLead()">שלח בקשה לשירות</button>
+</section>
+
+<div class="social-row">
+    <a href="https://facebook.com" class="dance-box icon-facebook"><svg viewBox="0 0 320 512"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg></a>
+    <a href="https://wa.me/972502232222" class="dance-box icon-whatsapp"><svg viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.1 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-5.5-2.8-23.2-8.5-44.2-27.2-16.4-14.6-27.4-32.7-30.6-38.2-3.2-5.6-.3-8.6 2.5-11.3 2.5-2.5 5.5-6.5 8.3-9.7 2.8-3.3 3.7-5.6 5.5-9.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 13.2 5.8 23.5 9.2 31.6 11.8 13.3 4.2 25.4 3.6 35 2.2 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg></a>
+    <a href="https://instagram.com" class="dance-box icon-instagram"><svg viewBox="0 0 448 512"><path d="M224.1 141c-45.8 0-82.8 37-82.8 82.8 0 45.8 37 82.8 82.8 82.8s82.8-37 82.8-82.8c0-45.8-37-82.8-82.8-82.8zm0 135c-28.9 0-52.3-23.4-52.3-52.3s23.4-52.3 52.3-52.3 52.3 23.4 52.3 52.3-23.4 52.3-52.3 52.3zm129.5-184.6c-10.2 0-18.5 8.3-18.5 18.5s8.3 18.5 18.5 18.5 18.5-8.3 18.5-18.5-8.3-18.5-18.5-18.5zm33.9 47c-13.8-54.4-44.3-84.9-98.7-98.7-54.4-13.8-158.4-13.8-212.8 0-54.4 13.8-84.9 44.3-98.7 98.7-13.8 54.4-13.8 158.4 0 212.8 13.8 54.4 44.3 84.9 98.7 98.7 54.4 13.8 158.4 13.8 212.8 0 54.4-13.8 84.9-44.3 98.7-98.7 13.8-54.4 13.8-158.4 0-212.8zm-39.7 215.1c-11.5 45.3-35.6 69.4-80.9 80.9-45.3 11.5-136 11.5-181.3 0-45.3-11.5-69.4-35.6-80.9-80.9-11.5-45.3-11.5-136 0-181.3 11.5-45.3 35.6-69.4 80.9-80.9 45.3-11.5 136-11.5 181.3 0 45.3 11.5 69.4 35.6 80.9 80.9 11.5 45.3 11.5 136 0 181.3z"/></svg></a>
+    
+    <div class="dance-box icon-camera" onclick="openCam()"><svg viewBox="0 0 24 24"><path d="M5 4h4l2-2h6l2 2h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 2v12h14V6h-4.83l-2-2H9.83l-2 2H5zm7 10a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0-2a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg></div>
+    
+    <a href="tel:0502232222" class="dance-box icon-sos">SOS</a>
+    <a href="tel:0502232222" class="dance-box icon-phone"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.15 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></a>
+</div>
+
+<footer>© 2026 EV LAB | מומחי Tesla | 050-2232222</footer>
+
+<script>
+function openCam() { document.getElementById('fileInput').click(); }
+function imageSent() {
+    window.location.href = `https://wa.me/972502232222?text=${encodeURIComponent("היי EV LAB, שלחתי תמונה להצעת מחיר.")}`;
+}
+function sendLead() {
+    const n = document.getElementById('leadName').value;
+    const p = document.getElementById('leadPhone').value;
+    if(!n || !p) { alert("נא למלא שם וטלפון"); return; }
+    window.location.href = `https://wa.me/972502232222?text=${encodeURIComponent("היי, שמי "+n+" טלפון "+p+", אשמח שתחזרו אליי.")}`;
+}
+
+let slides = document.querySelectorAll(".bg-slide");
+let cur = 0;
+setInterval(() => {
+    slides[cur].classList.remove("active");
+    cur = (cur + 1) % slides.length;
+    slides[cur].classList.add("active");
+}, 5000);
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if(entry.isIntersecting) {
+            if(entry.target.id === 'servicesGrid') document.getElementById('servicesGrid').classList.add('start-domino-9');
+            if(entry.target.id === 'whyGrid') document.getElementById('whyGrid').classList.add('start-domino-6');
+        }
+    });
+}, { threshold: 0.5 });
+
+observer.observe(document.getElementById('servicesGrid'));
+observer.observe(document.getElementById('whyGrid'));
+
+let isAutoScrolling = true;
+function autoScroll() {
+    if(!isAutoScrolling) return;
+    window.scrollBy(0, 1.1);
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 5) { window.scrollTo(0, 0); }
+}
+function pauseScroll() {
+    isAutoScrolling = false;
+    document.querySelectorAll('.unified-card, .why-card').forEach(c => c.classList.add('reading-mode'));
+    setTimeout(() => {
+        isAutoScrolling = true;
+        document.querySelectorAll('.unified-card, .why-card').forEach(c => c.classList.remove('reading-mode'));
+    }, 5000);
+}
+window.addEventListener('touchstart', pauseScroll, {passive: true});
+window.addEventListener('mousedown', pauseScroll);
+setInterval(autoScroll, 30);
+</script>
+
+</body>
+</html>
