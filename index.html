@@ -252,13 +252,13 @@ function pauseScroll(typing) {
 }
 
 function openCam() { document.getElementById('fileInput').click(); }
-function imageSent() { window.location.href = https://wa.me/972547777037?text=שלחתי תמונה להצעה.; }
+function imageSent() { window.location.href = `https://wa.me/972547777037?text=שלחתי תמונה להצעה.`; }
 
 function sendLeadToWA() {
     const name = document.getElementById('leadName').value;
     const phone = document.getElementById('leadPhone').value;
     if(!name || !phone) { alert("אנא מלא שם וטלפון"); return; }
-    window.location.href = https://wa.me/972547777037?text=היי, שמי ${name} טלפון ${phone};
+    window.location.href = `https://wa.me/972547777037?text=היי, שמי ${name} טלפון ${phone}`;
 }
 
 let slides = document.querySelectorAll(".bg-slide");
