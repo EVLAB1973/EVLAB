@@ -157,25 +157,48 @@ footer { text-align: center; padding: 50px; color: #888; font-size: 15px; }
     .hero { padding-top: 130px; align-items: flex-end; text-align: right; min-height: 70vh; padding-right: 15px; }
     .hero h2 { font-size: 38px; white-space: pre-line; margin-bottom: 10px; text-align: right; width: 100%; } 
     .hero p.tagline { font-size: 20px; margin-bottom: 20px; text-align: right; width: 100%; display: flex; flex-direction: column; }
-    .hero p.tagline span.sep { display: none; } 
     .hero-bullets { 
         background: none; border: none; padding: 0; 
         max-width: 100%; margin-right: 0; text-align: right; 
         backdrop-filter: none; width: 100%;
         display: flex; flex-direction: column; align-items: flex-end;
     }
-    .hero-bullets p { 
-        font-size: 17px; margin-bottom: 8px; font-weight: 400; 
-        color: rgba(255,255,255,0.9); width: 100%; text-align: right; 
-    }
+    .hero-bullets p { font-size: 17px; margin-bottom: 8px; color: rgba(255,255,255,0.9); width: 100%; text-align: right; }
+    
     .unified-grid { grid-template-columns: 1fr; gap: 20px; }
     .unified-card { padding: 20px; min-height: auto; width: calc(100% - 70px); margin-left: 70px; }
     .lead-form { width: calc(100% - 70px); margin-left: 70px; padding: 20px; }
-    .side-controls { left: 8px; top: 110px; gap: 12px; }
-    .float-btn { width: 62px; height: 62px; }
-    .start-domino .unified-card { animation-duration: 80s; } 
-    .social-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 40px 0; }
-    .dance-box { width: 65px; height: 65px; }
+    
+    .side-controls { left: 8px; top: 110px; gap: 15px; }
+    .float-btn { width: 75px; height: 75px; }
+    .float-btn svg { width: 40px; height: 40px; }
+    .float-btn.sos { font-size: 16px; }
+    
+    .social-row { display: flex; flex-direction: row; justify-content: center; gap: 5px; padding: 40px 0; width: 100%; }
+    .dance-box { width: 60px; height: 60px; }
+    .dance-box svg { width: 32px; height: 32px; }
+    .icon-sos { font-size: 17px; }
+
+    /* Domino Mobile Fix */
+    .start-domino .unified-card { animation: domino-glow 108s infinite !important; } 
+    .start-domino .unified-card:nth-child(1) { animation-delay: 0s !important; }
+    .start-domino .unified-card:nth-child(2) { animation-delay: 5.8s !important; }
+    .start-domino .unified-card:nth-child(3) { animation-delay: 11.6s !important; }
+    .start-domino .unified-card:nth-child(4) { animation-delay: 17.4s !important; }
+    .start-domino .unified-card:nth-child(5) { animation-delay: 23.2s !important; }
+    .start-domino .unified-card:nth-child(6) { animation-delay: 29s !important; }
+    .start-domino .unified-card:nth-child(7) { animation-delay: 34.8s !important; }
+    .start-domino .unified-card:nth-child(8) { animation-delay: 40.6s !important; }
+    
+    /* Ensure Vision/About Us follow the EXACT same animation sequence */
+    .start-domino .unified-card.full-width:nth-child(9) { animation-delay: 46.4s !important; }
+    .start-domino .unified-card.full-width:nth-child(10) { animation-delay: 52.2s !important; }
+
+    /* Mobile Default State for Vision/About Us */
+    .unified-card.full-width { 
+        border-color: rgba(255, 255, 255, 0.01); 
+        background: rgba(255, 255, 255, 0.005); 
+    }
 }
 
 .unified-card.full-width { grid-column: span 2; border: 1px solid rgba(0, 240, 255, 0.1); background: rgba(0, 240, 255, 0.03); }
@@ -281,8 +304,8 @@ footer { text-align: center; padding: 50px; color: #888; font-size: 15px; }
 
     <section class="lead-form" id="leadForm">
         <h3>השאר פרטים ונחזור אליך</h3>
-        <input type="text" id="leadName" placeholder="שם מלא" onfocus="pauseScroll(true)" onblur="pauseScroll(false)">
-        <input type="tel" id="leadPhone" placeholder="טלפון" onfocus="pauseScroll(true)" onblur="pauseScroll(false)">
+        <input type="text" id="leadName" placeholder="שם מלא">
+        <input type="tel" id="leadPhone" placeholder="טלפון">
         <button onclick="sendLeadToWA()">שלח בקשה לשירות</button>
     </section>
 
@@ -311,16 +334,7 @@ function handleInteraction() {
     scrollTimeout = setTimeout(() => { if (!isTyping) isAutoScrolling = true; }, 5000);
 }
 
-function pauseScroll(typing) { 
-    isTyping = typing; 
-    if (typing) { isAutoScrolling = false; clearTimeout(scrollTimeout); }
-    else { scrollTimeout = setTimeout(() => { isAutoScrolling = true; }, 2000); }
-}
-
-// פונקציות מצלמה וגלריה מעודכנות
-function openCam() { 
-    document.getElementById('fileInput').click(); 
-}
+function openCam() { document.getElementById('fileInput').click(); }
 
 function imageSent() {
     const fileInput = document.getElementById('fileInput');
